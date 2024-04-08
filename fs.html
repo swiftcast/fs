@@ -32,7 +32,6 @@
 <table id="pokemonTable">
   <thead>
     <tr>
-      <th>Type / Slot</th>
       <th>Slot 1</th>
       <th>Slot 2</th>
       <th>Slot 3</th>
@@ -138,7 +137,6 @@ const FRIEND_SAFARIS = [
 ];
 
 
-
 function generateTable() {
   const tableBody = document.querySelector('#pokemonTable tbody');
   
@@ -154,22 +152,21 @@ function generateTable() {
     let maxPokemonCount = type.reduce((max, slot) => Math.max(max, slot.length), 0);
     for (let i = 0; i < maxPokemonCount; i++) {
       const row = document.createElement('tr');
-      if (i === 0) {
-        const slotHeader = document.createElement('td');
-        slotHeader.textContent = 'Pokémon';
-        row.appendChild(slotHeader);
-      } else {
-        row.appendChild(document.createElement('td')); // Empty cell for alignment
-      }
-
       type.forEach(slot => {
         const pokemonCell = document.createElement('td');
         if (slot[i]) {
-          pokemonCell.innerHTML = `${slot[i]} <input type="checkbox" name="${slot[i]}">`;
+          const checkBox = document.createElement('input');
+          checkBox.type = 'checkbox';
+          checkBox.name = slot[i];
+          checkBox.checked = JSON.parse(localStorage.getItem(slot[i])) || false;
+          checkBox.onchange = (e) => {
+            localStorage.setItem(e.target.name, e.target.checked);
+          };
+          pokemonCell.appendChild(document.createTextNode(slot[i] + " "));
+          pokemonCell.appendChild(checkBox);
         }
         row.appendChild(pokemonCell);
       });
-
       tableBody.appendChild(row);
     }
   });

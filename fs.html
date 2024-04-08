@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Friend Safari Checklist</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  .type-header {
+    text-align: center;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h2>Pokémon Friend Safari Checklist</h2>
+<table id="pokemonTable">
+  <thead>
+    <tr>
+      <th>Type / Slot</th>
+      <th>Slot 1</th>
+      <th>Slot 2</th>
+      <th>Slot 3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- Pokémon list will be inserted here by the script -->
+  </tbody>
+</table>
+
+<script>
+const FRIEND_SAFARIS = [
+  [
+    ["Lillipup", "Dunsparce", "Teddiursa", "Aipom"],
+    ["Kecleon", "Minccino", "Loudred", "Audino"],
+    ["Eevee", "Ditto", "Smeargle", "Chansey"],
+  ],
+  [
+    ["Meditite", "Mankey", "Machoke", "Mienfoo"],
+    ["Pancham", "Pancham", "Throh", "Sawk"],
+    ["Hariyama", "Tyrogue", "Riolu", "Breloom"],
+  ],
+  [
+    ["Pidgey", "Spearow", "Farfetch’d", "Doduo"],
+    ["Hoothoot", "Tranquill", "Swanna", "Woobat"],
+    ["Rufflet", "Tropius", "Fletchinder", "Hawlucha"],
+  ],
+  [
+    ["Kakuna", "Cascoon", "Seviper", "Gloom"],
+    ["Venomoth", "Swalot", "Garbodor", "Ariados"],
+    ["Toxicroak", "Drapion", "Muk", "Whirlipede"],
+  ],
+  [
+    ["Phanpy", "Wooper", "Trapinch", "Sandshrew"],
+    ["Marowak", "Camerupt", "Dugtrio", "Nincada"],
+    ["Palpitoad", "Gastrodon", "Diggersby", "Diggersby"],
+  ],
+  [
+    ["Dwebble", "Dwebble", "Nosepass", "Boldore"],
+    ["Pupitar", "Corsola", "Onix", "Magcargo"],
+    ["Rhydon", "Shuckle", "Barbaracle", "Barbaracle"],
+  ],
+  [
+    ["Butterfree", "Combee", "Ledyba", "Paras"],
+    ["Beautifly", "Masquerain", "Volbeat", "Illumise"],
+    ["Vivillon", "Venomoth", "Pinsir", "Heracross"],
+  ],
+  [
+    ["Shuppet", "Shuppet", "Lampent", "Lampent"],
+    ["Phantump", "Phantump", "Pumpkaboo", "Pumpkaboo"],
+    ["Golurk", "Drifblim", "Dusclops", "Spiritomb"],
+  ],
+  [
+    ["Ferroseed", "Ferroseed", "Mawile", "Magneton"],
+    ["Metang", "Klang", "Skarmory", "Forretress"],
+    ["Bronzong", "Excadrill", "Klefki", "Klefki"],
+  ],
+  [
+    ["Ponyta", "Growlithe", "Pansear", "Magmar"],
+    ["Charmeleon", "Pyroar", "Slugma", "Larvesta"],
+    ["Braixen", "Braixen", "Fletchinder", "Ninetales"],
+  ],
+  [
+    ["Krabby", "Bibarel", "Panpour", "Octillery"],
+    ["Wartortle", "Quagsire", "Gyarados", "Floatzel"],
+    ["Frogadier", "Frogadier", "Azumarill", "Poliwhirl"],
+  ],
+  [
+    ["Oddish", "Tangela", "Pansage", "Sunkern"],
+    ["Ivysaur", "Petilil", "Sawsbuck", "Swadloon"],
+    ["Quilladin", "Quilladin", "Maractus", "Gogoat"],
+  ],
+  [
+    ["Electrode", "Emolga", "Dedenne", "Pachirisu"],
+    ["Pikachu", "Helioptile", "Electabuzz", "Stunfisk"],
+    ["Luxio", "Galvantula", "Zebstrika", "Manectric"],
+  ],
+  [
+    ["Abra", "Drowzee", "Grumpig", "Munna"],
+    ["Wobbuffet", "Sigilyph", "Espurr", "Espurr"],
+    ["Duosion", "Xatu", "Girafarig", "Gothorita"],
+  ],
+  [
+    ["Snorunt", "Delibird", "Spheal", "Snover"],
+    ["Bergmite", "Bergmite", "Sneasel", "Beartic"],
+    ["Lapras", "Cloyster", "Dewgong", "Piloswine"],
+  ],
+  [
+    ["Gabite", "Gabite", "Fraxure", "Fraxure"],
+    ["Shelgon", "Dragonair", "Noibat", "Noibat"],
+    ["Druddigon", "Druddigon", "Sliggoo", "Sliggoo"],
+  ],
+  [
+    ["Pawniard", "Vullaby", "Nuzleaf", "Mightyena"],
+    ["Sneasel", "Sandile", "Cacturne", "Crawdaunt"],
+    ["Liepard", "Inkay", "Absol", "Sableye"],
+  ],
+  [
+    ["Kirlia", "Snubbull", "Togepi", "Dedenne"],
+    ["Mawile", "Jigglypuff", "Spritzee", "Swirlix"],
+    ["Floette", "Clefairy", "Floette", "Floette"],
+  ],
+];
+
+
+
+function generateTable() {
+  const tableBody = document.querySelector('#pokemonTable tbody');
+  
+  FRIEND_SAFARIS.forEach((type, index) => {
+    const typeRow = document.createElement('tr');
+    const typeHeader = document.createElement('th');
+    typeHeader.colSpan = 4;
+    typeHeader.className = 'type-header';
+    typeHeader.textContent = `Type ${index + 1}`;
+    typeRow.appendChild(typeHeader);
+    tableBody.appendChild(typeRow);
+
+    let maxPokemonCount = type.reduce((max, slot) => Math.max(max, slot.length), 0);
+    for (let i = 0; i < maxPokemonCount; i++) {
+      const row = document.createElement('tr');
+      if (i === 0) {
+        const slotHeader = document.createElement('td');
+        slotHeader.textContent = 'Pokémon';
+        row.appendChild(slotHeader);
+      } else {
+        row.appendChild(document.createElement('td')); // Empty cell for alignment
+      }
+
+      type.forEach(slot => {
+        const pokemonCell = document.createElement('td');
+        if (slot[i]) {
+          pokemonCell.innerHTML = `${slot[i]} <input type="checkbox" name="${slot[i]}">`;
+        }
+        row.appendChild(pokemonCell);
+      });
+
+      tableBody.appendChild(row);
+    }
+  });
+}
+
+window.onload = generateTable;
+</script>
+</body>
+</html>
